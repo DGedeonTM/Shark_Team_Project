@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Serial Port Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Serial Port Data</h1>
+    <div id="data-container"></div>
+
+    <script>
+        function updateData() {
+            $.ajax({
+                url: 'Communication.php',
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.data) {
+                        $('#data-container').text(data.data);
+                    }
+                    setTimeout(updateData, 1000); // Poll every 1 second (adjust as needed)
+                },
+                error: function () {
+                    console.error('Failed to fetch serial data');
+                    setTimeout(updateData, 1000); // Retry every 1 second on error
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            updateData(); // Initial update
+        });
+    </script>
+</body>
+</html>
